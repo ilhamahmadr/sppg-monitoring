@@ -951,15 +951,32 @@ async function uploadData(){
 let file=
 
 document.getElementById(
+
 "file"
+
 ).files[0];
 
 
+if(!file){
+
+alert(
+
+"Pilih foto/video dulu"
+
+);
+
+return;
+
+}
+
+
 let reader=
+
 new FileReader();
 
 
 reader.onload=
+
 async()=>{
 
 
@@ -1015,6 +1032,9 @@ base64
 
 
 
+try{
+
+
 let res=
 
 await fetch(
@@ -1026,6 +1046,14 @@ await fetch(
 method:
 
 "POST",
+
+headers:{
+
+"Content-Type":
+
+"application/json"
+
+},
 
 body:
 
@@ -1041,11 +1069,35 @@ data
 
 
 
+let hasil=
+
+await res.text();
+
+
 alert(
 
-await res.text()
+hasil
 
 );
+
+
+
+}catch(err){
+
+
+alert(
+
+"Upload gagal:\n"
+
++
+
+err
+
+);
+
+
+}
+
 
 };
 
