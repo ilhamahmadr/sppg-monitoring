@@ -946,175 +946,116 @@ UPLOAD
 */
 
 
-function uploadData(){
-
-
+async function uploadData(){
 
 let file=
 
 document.getElementById(
-
 "file"
-
 ).files[0];
 
 
-if(!file){
-
-alert(
-
-"Pilih file"
-
-);
-
-return;
-
-}
+let reader=
+new FileReader();
 
 
+reader.onload=
+async()=>{
 
-let form=
 
-new FormData();
+let base64=
+
+reader.result
+
+.split(",")
+
+[1];
 
 
 
-form.append(
+let data={
 
-"admin",
+admin:
 
 localStorage.getItem(
 
 "admin"
 
-)
+),
 
-);
-
-
-
-form.append(
-
-"lokasi",
+lokasi:
 
 document.getElementById(
 
 "lokasi"
 
-).value
+).value,
 
-);
-
-
-
-form.append(
-
-"catatan",
+catatan:
 
 document.getElementById(
 
 "catatan"
 
-).value
+).value,
 
-);
+name:
+
+file.name,
+
+type:
+
+file.type,
+
+file:
+
+base64
+
+};
 
 
 
-form.append(
+let res=
 
-"file",
-
-file
-
-);
-
-
-
-
-fetch(
+await fetch(
 
 "https://script.google.com/macros/s/AKfycbx9nplT5exUYmBkJm-cM0-P-_T_iNkZqc4aaBj-nhtMVJerZCsTujlsyO3MMFWEk6MAiw/exec",
 
 {
 
-method:"POST",
+method:
 
-body:form
+"POST",
+
+body:
+
+JSON.stringify(
+
+data
+
+)
 
 }
 
+);
 
-)
-
-.then(
-
-res=>
-
-res.text()
-
-)
-
-
-.then(
-
-hasil=>{
 
 
 alert(
 
-hasil
+await res.text()
 
 );
 
-
-
-document.getElementById(
-
-"catatan"
-
-).value="";
-
-
-document.getElementById(
-
-"preview"
-
-).innerHTML="";
-
-
-document.getElementById(
-
-"file"
-
-).value="";
+};
 
 
 
-}
+reader.readAsDataURL(
 
-
-)
-
-
-.catch(
-
-()=>{
-
-
-alert(
-
-"Upload gagal"
+file
 
 );
-
-
-}
-
-
-);
-
-
 
 }
 
